@@ -1,0 +1,8 @@
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.*?>
+<AnchorPane fx:controller="at.yawk.hdr.gui.MainController" xmlns:fx="http://javafx.com/fxml">
+    <TabPane AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+             fx:id="tabs" tabClosingPolicy="ALL_TABS">
+    </TabPane>
+    <fx:include AnchorPane.rightAnchor="5" AnchorPane.topAnchor="5" source="memory_canary.fxml"/>
+</AnchorPane>

@@ -1,0 +1,39 @@
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<GridPane fx:controller="at.yawk.hdr.gui.type.StackController" xmlns:fx="http://javafx.com/fxml">
+    <columnConstraints>
+        <ColumnConstraints percentWidth="100"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints percentHeight="30"/>
+        <RowConstraints percentHeight="70"/>
+    </rowConstraints>
+
+    <BorderPane GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <padding>
+            <Insets top="20" bottom="20" left="20" right="20"/>
+        </padding>
+        <top>
+            <Text fx:id="name" text="ABC/DEF" style="-fx-font-size: 1.5em; -fx-font-weight: bold">
+                <BorderPane.margin>
+                    <Insets bottom="5" left="5" right="5"/>
+                </BorderPane.margin>
+            </Text>
+        </top>
+        <center>
+            <FlowPane>
+                <Text fx:id="trace"/>
+            </FlowPane>
+        </center>
+    </BorderPane>
+    <BorderPane fx:id="objectsWrapper" GridPane.columnIndex="0" GridPane.rowIndex="1">
+        <center>
+            <FlowPane alignment="CENTER" orientation="VERTICAL" columnHalignment="CENTER" vgap="10">
+                <Text fx:id="objectsProgressText" text="Collecting objects…"/>
+                <ProgressBar fx:id="objectsProgress"/>
+            </FlowPane>
+        </center>
+    </BorderPane>
+</GridPane>

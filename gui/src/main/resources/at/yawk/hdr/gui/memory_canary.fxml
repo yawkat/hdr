@@ -1,0 +1,11 @@
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Text?>
+<StackPane fx:controller="at.yawk.hdr.gui.MemoryCanary" xmlns:fx="http://javafx.com/fxml" alignment="CENTER">
+    <ProgressBar fx:id="usage" prefWidth="300"/>
+    <ProgressBar fx:id="softUsage" prefWidth="300">
+        <styleClass>progress-no-background</styleClass>
+        <styleClass>progress-secondary</styleClass>
+    </ProgressBar>
+    <Text fx:id="text"/>
+</StackPane>

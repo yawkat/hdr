@@ -1,0 +1,18 @@
+<?import at.yawk.hdr.gui.tree.TreePane?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Text?>
+<BorderPane fx:controller="at.yawk.hdr.gui.type.ReferenceTreeController" xmlns:fx="http://javafx.com/fxml">
+    <center>
+        <TreePane fx:id="tree" id="tree">
+
+        </TreePane>
+    </center>
+    <bottom>
+        <StackPane alignment="CENTER" fx:id="progressPane">
+            <ProgressBar fx:id="progress" maxWidth="Infinity"/>
+            <Text fx:id="progressText"/>
+        </StackPane>
+    </bottom>
+</BorderPane>

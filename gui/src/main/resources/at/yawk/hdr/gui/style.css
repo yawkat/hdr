@@ -1,0 +1,16 @@
+.tree-entry-normal {
+    -fx-fill: grey;
+}
+.tree-entry-hover {
+    -fx-fill: black;
+}
+#tree {
+    -fx-background-color: white;
+}
+.progress-no-background .track {
+    visibility: collapse;
+    -fx-opacity: 0;
+}
+.progress-secondary .bar {
+    -fx-background-color: green;
+}

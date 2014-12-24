@@ -1,0 +1,10 @@
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<TableView fx:controller="at.yawk.hdr.gui.root.StackTableController" xmlns:fx="http://javafx.com/fxml"
+           fx:id="table" editable="false">
+    <columns>
+        <TableColumn text="#" fx:id="serial"/>
+        <TableColumn text="Summary" fx:id="name"/>
+        <TableColumn text="Object Count" fx:id="objectCount"/>
+    </columns>
+</TableView>

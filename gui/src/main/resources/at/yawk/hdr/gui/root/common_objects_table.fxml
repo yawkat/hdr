@@ -1,0 +1,10 @@
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<TableView fx:controller="at.yawk.hdr.gui.root.CommonObjectsTableController" xmlns:fx="http://javafx.com/fxml"
+           fx:id="table" editable="false">
+    <columns>
+        <TableColumn text="Class Name" fx:id="name"/>
+        <TableColumn text="Instance Count" fx:id="instanceCount"/>
+        <TableColumn text="Bytes" fx:id="bytes"/>
+    </columns>
+</TableView>

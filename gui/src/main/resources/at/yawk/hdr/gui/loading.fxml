@@ -1,0 +1,9 @@
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Text?>
+<FlowPane fx:controller="at.yawk.hdr.gui.LoadingController" xmlns:fx="http://javafx.com/fxml"
+          alignment="CENTER" orientation="VERTICAL" columnHalignment="CENTER" vgap="10">
+    <Text fx:id="text" text="Building root index…"/>
+    <ProgressBar fx:id="progress" prefWidth="300"/>
+    <fx:include source="memory_canary.fxml"/>
+</FlowPane>
