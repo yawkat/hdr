@@ -14,6 +14,6 @@
 .progress-secondary .bar {
     -fx-background-color: green;
 }
-.object-id {
+.object-id, .space-padded {
     -fx-font-family: monospace;
 }

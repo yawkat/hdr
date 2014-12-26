@@ -32,7 +32,7 @@
     </BorderPane>
     <BorderPane GridPane.columnIndex="0" GridPane.rowIndex="1">
         <center>
-            <TreeView fx:id="tree"/>
+            <TreeView fx:id="tree" styleClass="space-padded"/>
         </center>
     </BorderPane>
 </GridPane>

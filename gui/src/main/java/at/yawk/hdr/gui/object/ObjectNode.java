@@ -188,7 +188,9 @@ class ObjectNode {
 
         StringBuilder value = new StringBuilder();
         if (field != null) {
-            value.append(indexer.getStringIndex().get(field.nameId)).append(": \t");
+            String name = indexer.getStringIndex().get(field.nameId);
+            value.append(name).append(": ");
+            pad(value, name, 32);
         }
         String className = fieldTypeName;
         if (data != null) {
@@ -197,7 +199,9 @@ class ObjectNode {
                 className = typeData.getName();
             }
         }
-        value.append(className == null ? "???" : className);
+        if (className == null) { className = "???"; }
+        value.append(className);
+        pad(value, className, 64);
 
         if (data != null) {
             value.append(" / ").append(ObjectViewController.getObjectId(data.id));
@@ -218,6 +222,12 @@ class ObjectNode {
         }
 
         treeItem.setValue(new CellValue(this, value.toString()));
+    }
+
+    private void pad(StringBuilder value, String name, int count) {
+        for (int i = count; i > name.length(); i--) {
+            value.append(' ');
+        }
     }
 
     private void stopRequest() {
