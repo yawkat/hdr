@@ -1,7 +1,6 @@
 package at.yawk.hdr.gui;
 
 import at.yawk.hdr.MemoryUtil;
-import java.util.ArrayList;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.RunnableFuture;
 import javafx.application.Platform;
@@ -15,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Controls("memory_canary.fxml")
-public class MemoryCanary {
+public class MemoryCanary extends Controller {
     private static final char[] SUFFIXES = { 'B', 'K', 'M', 'G', 'T' };
 
     @FXML ProgressBar softUsage;

@@ -321,6 +321,7 @@ public class Indexer {
                             long val = reader.readPrimitive(stream, decl.type);
                             handler.visitInstanceField(instanceHeader, decl, val);
                         }
+                        handler.visitInstanceEnd(instanceHeader);
                     } else {
                         stream.seekBy(instanceHeader.bodyLength);
                     }
@@ -334,6 +335,7 @@ public class Indexer {
                             long ref = reader.readId(stream);
                             handler.visitObjectArrayEntry(objectArrayDumpHeader, ref);
                         }
+                        handler.visitObjectArrayEnd(objectArrayDumpHeader);
                     } else {
                         stream.seekBy(objectArrayDumpHeader.length * header.identifierSize);
                     }
@@ -347,6 +349,7 @@ public class Indexer {
                             long value = reader.readPrimitive(stream, primitiveArrayDumpHeader.elementType);
                             handler.visitPrimitiveArrayEntry(value);
                         }
+                        handler.visitPrimitiveArrayEnd(primitiveArrayDumpHeader);
                     } else {
                         stream.seekBy(primitiveArrayDumpHeader.length *
                                       BaseType.LENGTH[primitiveArrayDumpHeader.elementType]);

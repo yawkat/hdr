@@ -26,6 +26,8 @@ public class BaseType {
      */
     public static byte[] LENGTH = new byte[MAX + 1];
 
+    public static String[] NAME = new String[MAX + 1];
+
     static {
         LENGTH[BOOLEAN] = 1;
         LENGTH[BYTE] = 1;
@@ -35,5 +37,15 @@ public class BaseType {
         LENGTH[FLOAT] = 4;
         LENGTH[LONG] = 8;
         LENGTH[DOUBLE] = 8;
+        LENGTH[OBJECT] = 8;
+
+        NAME[BOOLEAN] = "boolean";
+        NAME[BYTE] = "byte";
+        NAME[SHORT] = "short";
+        NAME[CHAR] = "char";
+        NAME[INT] = "int";
+        NAME[FLOAT] = "float";
+        NAME[LONG] = "long";
+        NAME[DOUBLE] = "double";
     }
 }

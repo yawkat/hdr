@@ -1,0 +1,38 @@
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TreeItem?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<GridPane fx:controller="at.yawk.hdr.gui.object.ObjectViewController" xmlns:fx="http://javafx.com/fxml">
+    <columnConstraints>
+        <ColumnConstraints percentWidth="100"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints percentHeight="30"/>
+        <RowConstraints percentHeight="70"/>
+    </rowConstraints>
+
+    <BorderPane GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <padding>
+            <Insets top="20" bottom="20" left="20" right="20"/>
+        </padding>
+        <top>
+            <Text fx:id="name" text="ABC/DEF" style="-fx-font-size: 1.5em; -fx-font-weight: bold">
+                <BorderPane.margin>
+                    <Insets bottom="5" left="5" right="5"/>
+                </BorderPane.margin>
+            </Text>
+        </top>
+        <center>
+            <GridPane hgap="10" vgap="5">
+                <Text text="Instance Size:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <Text fx:id="size" text="100" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            </GridPane>
+        </center>
+    </BorderPane>
+    <BorderPane GridPane.columnIndex="0" GridPane.rowIndex="1">
+        <center>
+            <TreeView fx:id="tree"/>
+        </center>
+    </BorderPane>
+</GridPane>

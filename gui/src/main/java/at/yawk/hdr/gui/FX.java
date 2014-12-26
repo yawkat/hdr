@@ -54,7 +54,7 @@ public class FX {
         return parent;
     }
 
-    static void dump(Node n) { dump(n, 0); }
+    public static void dump(Node n) { dump(n, 0); }
 
     private static void dump(Node n, int depth) {
         for (int i = 0; i < depth; i++) { System.out.print(" "); }

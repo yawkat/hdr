@@ -1,14 +1,12 @@
 package at.yawk.hdr.gui.type;
 
+import at.yawk.hdr.gui.Controller;
 import at.yawk.hdr.gui.DisposalListeners;
 import at.yawk.hdr.gui.MainController;
 import at.yawk.hdr.gui.ProgressBarCounter;
 import at.yawk.hdr.gui.tree.TreeNode;
 import at.yawk.hdr.gui.tree.TreePane;
-import at.yawk.hdr.index.HeapDumpItemVisitor;
-import at.yawk.hdr.index.Indexer;
-import at.yawk.hdr.index.StackData;
-import at.yawk.hdr.index.TypeData;
+import at.yawk.hdr.index.*;
 import at.yawk.hdr.scanner.ObjectReferenceScanner;
 import at.yawk.hdr.scanner.TypeScanner;
 import gnu.trove.map.TLongObjectMap;
@@ -31,7 +29,7 @@ import javafx.scene.text.TextAlignment;
 /**
  * @author yawkat
  */
-public class ReferenceTreeController {
+public class ReferenceTreeController extends Controller {
     @FXML StackPane progressPane;
     @FXML Text progressText;
     @FXML ProgressBar progress;
@@ -43,7 +41,10 @@ public class ReferenceTreeController {
         return future;
     }
 
-    void load(Indexer indexer, MainController mainController, long type) {
+    /**
+     * @return Future returning all object IDs of the given type
+     */
+    ListenableFuture<TLongSet> load(Indexer indexer, MainController mainController, long type) {
         tree.setCellValueFactory(node -> {
             ReferenceData value = node.getValue();
             Text text = new Text(value.getTypeData().getName() + "\n" + value.getReferenceCount());
@@ -57,16 +58,20 @@ public class ReferenceTreeController {
         });
 
         TypeScanner rootObjectScanner = new TypeScanner(type);
-        bind(indexer.walkHeapDump(rootObjectScanner, createCounter("Collecting root objects…"))).addListener(() -> {
+        ListenableFuture<?> root = indexer.walkHeapDump(rootObjectScanner, createCounter("Collecting root objects…"));
+        bind(root).addListener(() -> {
             TLongSet objects = rootObjectScanner.getObjects();
 
             TypeData typeData = indexer.getTypeIndex().get(type);
+            assert typeData != null;
             TreeNode<ReferenceData> rootNode = new TreeNode<>(
                     new ReferenceData(typeData.getInstanceCount(), typeData)
             );
             Platform.runLater(() -> tree.setRootNode(rootNode));
             walk(new Pass(indexer, rootNode, objects));
         });
+
+        return root.map(o -> rootObjectScanner.getObjects());
     }
 
     private ProgressBarCounter createCounter(String name) {

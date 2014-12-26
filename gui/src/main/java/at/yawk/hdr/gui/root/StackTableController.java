@@ -17,10 +17,12 @@ import javafx.scene.control.TableColumn;
  * @author yawkat
  */
 @Controls("stack_table.fxml")
-@RootController.Tab(title = "Stacks", priority = 100)
+@RootController.Tab(priority = 100)
 public class StackTableController extends ReferenceOwnerTableController<StackData> implements RootController {
     @FXML TableColumn<StackData, Integer> serial;
     @FXML TableColumn<StackData, Long> objectCount;
+
+    { setTitle("Stacks"); }
 
     @Override
     public void init(Indexer indexer, MainController mainController) {

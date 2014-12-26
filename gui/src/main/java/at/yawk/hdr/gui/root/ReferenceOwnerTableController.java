@@ -1,5 +1,6 @@
 package at.yawk.hdr.gui.root;
 
+import at.yawk.hdr.gui.Controller;
 import at.yawk.hdr.gui.MainController;
 import at.yawk.hdr.index.Indexer;
 import at.yawk.hdr.index.ReferenceOwnerData;
@@ -15,7 +16,7 @@ import javafx.scene.input.MouseEvent;
 /**
  * @author yawkat
  */
-abstract class ReferenceOwnerTableController<R extends ReferenceOwnerData> {
+abstract class ReferenceOwnerTableController<R extends ReferenceOwnerData> extends Controller {
     @FXML TableView<R> table;
     @FXML TableColumn<R, String> name;
 

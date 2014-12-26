@@ -20,10 +20,12 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Controls("common_objects_table.fxml")
-@RootController.Tab(title = "Types", priority = 0)
+@RootController.Tab(priority = 0)
 public class CommonObjectsTableController extends ReferenceOwnerTableController<TypeData> implements RootController {
     @FXML private TableColumn<TypeData, Long> instanceCount;
     @FXML private TableColumn<TypeData, Long> bytes;
+
+    { setTitle("Types"); }
 
     public void init(Indexer indexer, MainController mainController) {
         super.init(indexer, mainController);

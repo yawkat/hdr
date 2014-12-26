@@ -39,10 +39,12 @@ public class HeapDumpUtil {
      * [B -> byte[]
      * java/lang/String -> java.lang.String
      * [Ljava/lang/String -> java.lang.String[]
+     *
+     * @param minusArray How many array levels to skip
      */
-    public static String pathToClassName(String pathName) {
+    public static String pathToClassName(String pathName, int minusArray) {
         StringBuilder builder = new StringBuilder();
-        int i = 0;
+        int i = minusArray;
         for (; pathName.charAt(i) == '['; i++) { builder.append("[]"); }
 
         if (i > 0 && i == pathName.length() - 1) {
@@ -59,6 +61,10 @@ public class HeapDumpUtil {
         }
 
         return builder.toString();
+    }
+
+    public static String pathToClassName(String pathName) {
+        return pathToClassName(pathName, 0);
     }
 
     /**

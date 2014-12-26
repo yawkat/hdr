@@ -18,8 +18,7 @@ public abstract class HeapDumpItemVisitor {
     final boolean parallel;
 
     private static final Set<Class<?>> itemTypes =
-            new Reflections(HeapDumpEntry.class.getPackage().getName())
-                    .getTypesAnnotatedWith(HeapDumpEntry.class);
+            new Reflections(HeapDumpEntry.class.getPackage().getName()).getTypesAnnotatedWith(HeapDumpEntry.class);
 
     /**
      * What items may be skipped (computed from non-overridden methods)
@@ -116,4 +115,10 @@ public abstract class HeapDumpItemVisitor {
     public void visitObjectArrayEntry(HprofHeapDumpObjectArrayDumpHeader header, long ref) {}
 
     public void visitPrimitiveArrayEntry(long value) {}
+
+    public void visitInstanceEnd(HprofHeapDumpInstanceHeader header) {}
+
+    public void visitObjectArrayEnd(HprofHeapDumpObjectArrayDumpHeader header) {}
+
+    public void visitPrimitiveArrayEnd(HprofHeapDumpPrimitiveArrayDumpHeader header) {}
 }

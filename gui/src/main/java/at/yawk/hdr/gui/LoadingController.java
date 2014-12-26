@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  * @author yawkat
  */
 @Slf4j
-public class LoadingController {
+public class LoadingController extends Controller {
     @FXML ProgressBar progress;
     @FXML Text text;
 

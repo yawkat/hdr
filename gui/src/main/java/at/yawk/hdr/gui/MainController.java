@@ -1,19 +1,18 @@
 package at.yawk.hdr.gui;
 
+import at.yawk.hdr.format.HprofHeapDumpInstanceHeader;
+import at.yawk.hdr.gui.object.ObjectViewController;
 import at.yawk.hdr.gui.root.RootController;
 import at.yawk.hdr.gui.type.ReferenceOwnerController;
 import at.yawk.hdr.gui.type.TypeController;
-import at.yawk.hdr.index.Indexer;
-import at.yawk.hdr.index.ReferenceOwnerData;
-import at.yawk.hdr.index.StackData;
-import at.yawk.hdr.index.TypeData;
+import at.yawk.hdr.index.*;
 import java.util.Comparator;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.FlowPane;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 
@@ -21,7 +20,7 @@ import org.reflections.Reflections;
  * @author yawkat
  */
 @Slf4j
-public class MainController {
+public class MainController extends Controller {
     @FXML TabPane tabs;
     @FXML Object commonObjects;
 
@@ -40,16 +39,13 @@ public class MainController {
                 })
                 .sorted(Comparator.comparingInt(c -> c.getAnnotation(RootController.Tab.class).priority()))
                 .forEach(c -> {
-                    RootController.Tab annotation = c.getAnnotation(RootController.Tab.class);
                     FXMLLoader loader = new FXMLLoader();
                     Parent parent = FX.inflate(loader, c);
 
-                    loader.<RootController>getController().init(indexer, this);
+                    RootController controller = loader.<RootController>getController();
+                    controller.init(indexer, this);
 
-                    Tab tab = new Tab(annotation.title());
-                    tab.setClosable(false);
-                    tab.setContent(parent);
-                    tabs.getTabs().add(tab);
+                    openTab(parent, (Controller) controller, false);
                 });
     }
 
@@ -65,11 +61,24 @@ public class MainController {
 
         FXMLLoader loader = new FXMLLoader();
         Parent parent = FX.inflate(TypeController.class, loader, layout);
-        loader.<ReferenceOwnerController<R>>getController().init(indexer, this, data);
+        ReferenceOwnerController<R> controller = loader.<ReferenceOwnerController<R>>getController();
+        controller.init(indexer, this, data);
 
+        openTab(parent, controller, true);
+    }
+
+    public void openObjectData(Indexer indexer, ObjectData objectData) {
+        FXMLLoader loader = new FXMLLoader();
+        Parent parent = FX.inflate(loader, ObjectViewController.class);
+        ObjectViewController controller = loader.<ObjectViewController>getController();
+        controller.init(indexer, this, objectData);
+        openTab(parent, controller, true);
+    }
+
+    private void openTab(Parent parent, Controller controller, boolean closeable) {
         Tab tab = new Tab();
-        tab.setText(data.getName());
-        tab.setClosable(true);
+        tab.textProperty().bind(controller.titleProperty());
+        tab.setClosable(closeable);
         tab.setContent(parent);
         tabs.getTabs().add(tab);
         tabs.getSelectionModel().select(tab);

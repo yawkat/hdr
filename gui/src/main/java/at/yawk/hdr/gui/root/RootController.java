@@ -16,8 +16,6 @@ public interface RootController {
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)
     public static @interface Tab {
-        String title();
-
         int priority() default 0;
     }
 }
