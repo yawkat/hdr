@@ -53,9 +53,9 @@ public abstract class HeapDumpItemVisitor {
     }
 
     /**
-     * @return whether this item should be visited.
+     * @return whether this item should be skipped.
      */
-    public boolean preVisit(byte type) {
+    public boolean maySkip(byte type) {
         return skip[type & 0xff];
     }
 

@@ -38,7 +38,7 @@ public class Indexer {
     @Getter private final IdIndex<TypeData> typeIndex = new IdIndex<>();
     private final TypeData[] primitiveArrayTypes = new TypeData[BaseType.MAX + 1];
 
-    private final List<PositionLengthTuple> heapDumpSegments = new ArrayList<>();
+    private final List<HeapDumpSegment> heapDumpSegments = new ArrayList<>();
 
     public Indexer(StreamPool pool, Executor executor) {
         this.pool = pool;
@@ -113,7 +113,7 @@ public class Indexer {
                     break;
                 case HprofHeapDumpHeader.ID:
                 case HprofHeapDumpSegmentHeader.ID:
-                    heapDumpSegments.add(new PositionLengthTuple(stream.getPosition(), tagHeader.length));
+                    heapDumpSegments.add(new HeapDumpSegment(stream.getPosition(), tagHeader.length));
                     // -- fall through: skip heap dump body
                 default:
                     stream.seekBy(tagHeader.length);
@@ -235,20 +235,54 @@ public class Indexer {
 
         if (handler.parallel) {
             Collection<ListenableFuture<?>> futures = new ArrayList<>();
-            for (PositionLengthTuple segment : heapDumpSegments) {
+            for (HeapDumpSegment segment : heapDumpSegments) {
+                synchronized (segment) {
+                    if (segment.currentEnqueuedVisitor != null) {
+                        if (segment.currentEnqueuedVisitor instanceof MultiItemVisitor) {
+                            ((MultiItemVisitor) segment.currentEnqueuedVisitor).add(handler);
+                        } else {
+                            segment.currentEnqueuedVisitor = new MultiItemVisitor(
+                                    segment.currentEnqueuedVisitor,
+                                    handler
+                            );
+                        }
+                        if (progressCounter != ProgressCounter.EMPTY) {
+                            if (segment.counter instanceof MultiProgressCounter) {
+                                ((MultiProgressCounter) segment.counter).add(progressCounter);
+                            } else {
+                                segment.counter = new MultiProgressCounter(segment.counter, progressCounter);
+                            }
+                        }
+                    } else {
+                        ListenableFuture<?> future = execute(() -> {
+                            HeapDumpItemVisitor visitor;
+                            ProgressCounter counter;
+                            synchronized (segment) {
+                                visitor = segment.currentEnqueuedVisitor;
+                                counter = segment.counter;
+                                segment.currentEnqueuedVisitor = null;
+                            }
+                            walkHeapDumpSegment(segment, visitor, counter);
+                        });
+                        segment.currentEnqueuedVisitor = handler;
+                        segment.consumerFuture = new MultiConsumerFuture<>(future);
+                        segment.counter = progressCounter;
+                    }
+                    futures.add(segment.consumerFuture.openFuture());
+                }
                 futures.add(execute(() -> walkHeapDumpSegment(segment, handler, progressCounter)));
             }
             return new MultiFuture<>(futures);
         } else {
             return execute(() -> {
-                for (PositionLengthTuple segment : heapDumpSegments) {
+                for (HeapDumpSegment segment : heapDumpSegments) {
                     walkHeapDumpSegment(segment, handler, progressCounter);
                 }
             });
         }
     }
 
-    private void walkHeapDumpSegment(PositionLengthTuple segment, HeapDumpItemVisitor handler,
+    private void walkHeapDumpSegment(HeapDumpSegment segment, HeapDumpItemVisitor handler,
                                      ProgressCounter progressCounter)
             throws IOException, InterruptedException {
         log.debug("Walking heap dump segment {}", segment);
@@ -286,7 +320,7 @@ public class Indexer {
 
                 byte type = reader.readU1(stream);
                 log.trace("Item {}", type);
-                boolean skip = handler.preVisit(type);
+                boolean skip = handler.maySkip(type);
 
                 switch (type) {
                 case HprofHeapDumpClassHeader.ID:
