@@ -80,4 +80,8 @@ public class HeapDumpUtil {
         }
         return -1;
     }
+
+    public static String getSimpleClassName(String className) {
+        return className.substring(className.lastIndexOf('.') + 1);
+    }
 }

@@ -1,5 +1,6 @@
 package at.yawk.hdr.gui.type;
 
+import at.yawk.hdr.HeapDumpUtil;
 import at.yawk.hdr.gui.MainController;
 import at.yawk.hdr.index.Indexer;
 import at.yawk.hdr.index.ListenableFuture;
@@ -40,6 +41,8 @@ public class TypeController extends ReferenceOwnerController<TypeData> {
     @Override
     public void init(Indexer indexer, MainController mainController, TypeData typeData) {
         super.init(indexer, mainController, typeData);
+
+        setTitle(HeapDumpUtil.getSimpleClassName(typeData.getName()));
 
         int instanceSize = typeData.getClassHeader().instanceSize;
         size.setText(String.valueOf(instanceSize));

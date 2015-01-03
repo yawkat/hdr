@@ -27,7 +27,7 @@ public class LoadingController extends Controller {
 
     public void load(Path heapDump, Consumer<Indexer> callback) throws FileNotFoundException {
         Logger logger = LoggerFactory.getLogger(Indexer.class);
-        int parallelism = Runtime.getRuntime().availableProcessors();
+        int parallelism = Runtime.getRuntime().availableProcessors() * 2;
         ExecutorService executor = Executors.newFixedThreadPool(
                 parallelism,
                 new ThreadFactory() {

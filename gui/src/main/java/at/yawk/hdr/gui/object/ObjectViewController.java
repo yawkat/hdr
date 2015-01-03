@@ -1,5 +1,6 @@
 package at.yawk.hdr.gui.object;
 
+import at.yawk.hdr.HeapDumpUtil;
 import at.yawk.hdr.format.BaseType;
 import at.yawk.hdr.gui.Controller;
 import at.yawk.hdr.gui.Controls;
@@ -79,11 +80,11 @@ public class ObjectViewController extends Controller {
         TypeData typeData = indexer.getTypeIndex().get(data.classId);
 
         long len = -1;
-        String title;
+        String typeName;
         if (typeData == null) {
-            title = "??? / " + idString;
+            typeName = "???";
         } else {
-            title = typeData.getName() + " / " + idString;
+            typeName = typeData.getName();
             if (data.primitiveArrayType == -1) {
                 len = typeData.getFieldsWithInherited().stream()
                         .mapToLong(field -> BaseType.LENGTH[field.type])
@@ -94,8 +95,8 @@ public class ObjectViewController extends Controller {
                 }
             }
         }
-        name.setText(title);
-        setTitle(title);
+        name.setText(typeName + " / " + idString);
+        setTitle(HeapDumpUtil.getSimpleClassName(typeName) + " / " + idString);
         size.setText(len == -1 ? "" : String.valueOf(len));
     }
 
