@@ -1,18 +1,21 @@
 package at.yawk.hdr.index;
 
 import at.yawk.hdr.format.HprofString;
+import gnu.trove.iterator.TIntIterator;
 import gnu.trove.map.TLongIntMap;
 import gnu.trove.map.hash.TLongIntHashMap;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Iterator;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Fast, low-memory id -> string index
  *
  * @author yawkat
  */
-public class StringIndex {
+public class StringIndex extends Index<String> {
     private static final int INITIAL_SIZE = 128;
     private static final Charset CHARSET = StandardCharsets.UTF_8;
 
@@ -73,6 +76,10 @@ public class StringIndex {
         if (pos == 0) {
             return null;
         }
+        return get0(pos);
+    }
+
+    private String get0(int pos) {
         int len = readVarUInt(pos);
         return new String(data, pos, len, CHARSET).intern();
     }
@@ -102,6 +109,29 @@ public class StringIndex {
             shift += 7;
         } while ((b & 0x80) == 0);
         return val;
+    }
+
+    @Override
+    public int size() {
+        return positions.size();
+    }
+
+    @NotNull
+    @Override
+    public Iterator<String> iterator() {
+        return new Iterator<String>() {
+            TIntIterator positionIterator = positions.valueCollection().iterator();
+
+            @Override
+            public boolean hasNext() {
+                return positionIterator.hasNext();
+            }
+
+            @Override
+            public String next() {
+                return get(positionIterator.next());
+            }
+        };
     }
 }
 
