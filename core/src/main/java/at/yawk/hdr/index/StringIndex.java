@@ -133,5 +133,9 @@ public class StringIndex extends Index<String> {
             }
         };
     }
+
+    public int sizeBytes() {
+        return position;
+    }
 }
 
