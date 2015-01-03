@@ -270,7 +270,6 @@ public class Indexer {
                     }
                     futures.add(segment.consumerFuture.openFuture());
                 }
-                futures.add(execute(() -> walkHeapDumpSegment(segment, handler, progressCounter)));
             }
             return new MultiFuture<>(futures);
         } else {
