@@ -25,7 +25,7 @@ public class Indexer {
 
     private final HprofDataReader reader = new HprofDataReader();
 
-    private HprofFileHeader header;
+    @Getter private HprofFileHeader header;
     private int tagListStart;
 
     @Getter private final StringIndex stringIndex = new StringIndex();
