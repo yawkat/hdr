@@ -49,3 +49,41 @@ this works fairly well already (Xmx 3GB, 8GB heap dump):
 ![Type reference view](https://github.com/yawkat/hdr/blob/screenshots/S0ps.png?raw=true)
 
 ![Thread details (WIP)](https://github.com/yawkat/hdr/blob/screenshots/oYRc.png?raw=true)
+
+JPMS
+----
+
+To run on Java 9+, you'll need to configure the JVM to allow access to JavaFX modules:
+
+```
+--add-opens
+javafx.graphics/com.sun.javafx.util=ALL-UNNAMED
+--add-opens
+javafx.base/com.sun.javafx.reflect=ALL-UNNAMED
+--add-opens
+javafx.base/com.sun.javafx.beans=ALL-UNNAMED
+--add-opens
+javafx.graphics/com.sun.javafx.scene.layout=ALL-UNNAMED
+--add-opens
+javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
+--add-opens
+javafx.graphics/com.sun.javafx.tk=ALL-UNNAMED
+--add-opens
+javafx.graphics/com.sun.javafx.scene.text=ALL-UNNAMED
+--add-opens
+javafx.graphics/com.sun.javafx.scene=ALL-UNNAMED
+--add-opens
+javafx.base/com.sun.javafx.logging=ALL-UNNAMED
+--add-opens
+javafx.base/com.sun.javafx.collections=ALL-UNNAMED
+--add-opens
+javafx.base/com.sun.javafx.event=ALL-UNNAMED
+--add-opens
+javafx.graphics/com.sun.javafx.scene.traversal=ALL-UNNAMED
+--add-opens
+javafx.graphics/com.sun.javafx.stage=ALL-UNNAMED
+--add-opens
+javafx.graphics/com.sun.javafx.geom=ALL-UNNAMED
+--add-opens
+javafx.base/com.sun.javafx=ALL-UNNAMED
+```
