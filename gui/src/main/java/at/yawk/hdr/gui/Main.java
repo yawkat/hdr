@@ -1,16 +1,12 @@
 package at.yawk.hdr.gui;
 
-import at.yawk.logging.jul.FormatterBuilder;
-import at.yawk.logging.jul.Loggers;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.slf4j.bridge.SLF4JBridgeHandler;
 
 /**
  * @author yawkat
@@ -31,14 +27,8 @@ public class Main extends Application {
     }
 
     private void prepareLogging() {
-        Logger root = Logger.getLogger("");
-        ConsoleHandler handler = new ConsoleHandler();
-        handler.setFormatter(
-                FormatterBuilder.create().build()
-        );
-        handler.setLevel(Level.FINE);
-        root.setLevel(handler.getLevel());
-        Loggers.replaceHandlers(root, handler);
+        SLF4JBridgeHandler.removeHandlersForRootLogger();
+        SLF4JBridgeHandler.install();
     }
 
     private static Path expandShell(Path path) {
